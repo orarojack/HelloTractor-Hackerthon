@@ -1,0 +1,55 @@
+<div class="flex flex-col">
+  <%= render 'components/breadcrumb', breadcrumbs: [
+    {text: 'Home', path: root_path},
+    {text: 'Tractor Listings', path: tractor_listings_path }
+  ] %>
+
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-800 capitalize mt-4">Tractors (<%= @tractor_listing.tractors.size %>)</h1>
+     <%= link_to 'Add Tractor', new_tractor_listing_tractor_path(@tractor_listing), class: 'btn-primary' %>
+  </div>
+
+  <% unless @tractor_listing.tractors.empty? %>
+    <div class="overflow-x-auto mt-4 bg-white rounded-md shadow-sm border border-gray-200">
+      <table class="w-full text-sm text-left">
+        <thead class="bg-gray-100 text-gray-600">
+          <tr>
+            <th class="p-3 border-b border-gray-200 uppercase">Tractor</th>
+            <th class="p-3 border-b border-gray-200 uppercase">Price</th>
+            <th class="p-3 border-b border-gray-200 uppercase">Publishing Status</th>
+            <th class="p-3 border-b border-gray-200 uppercase">Selling Status</th>
+            <th class="p-3 border-b border-gray-200 uppercase">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @tractor_listing.tractors.each_with_index do |tractor, index| %>
+            <tr class="<%= index.even? ? 'bg-gray-50' : 'bg-white' %> hover:bg-gray-100 transition-colors">
+              <td class="p-3 border-b border-gray-200 flex lg:flex-row flex-col items-center gap-3">
+                <% if tractor.images.attached? %>
+                  <%= image_tag(tractor.images[0], class: "w-16 h-16 object-cover rounded-md", alt: "Tractor Image") %>
+                <% end %>
+                <%= tractor.name %>
+              </td>
+              <td class="p-3 border-b border-gray-200"><%= number_with_delimiter tractor.price %></td>
+              <td class="p-3 border-b border-gray-200">
+               <span class="py-1 px-2 font-semibold rounded text-xs <%= publishing_status_badge_class(tractor.publishing_status) %>"><%= tractor.publishing_status.humanize %></span>
+              </td>
+              <td class="p-3 border-b border-gray-200"><%= tractor.selling_status.humanize %></td>
+              <td class="p-3 border-b border-gray-200 text-blue-500">
+                <!-- Actions (e.g., Edit/Delete) -->
+                <%= link_to 'Edit', edit_tractor_listing_tractor_path(@tractor_listing, tractor), class: 'hover:underline' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="bg-white rounded-md shadow-sm p-6 border border-gray-200 min-h-[200px] flex flex-col justify-center items-center mt-4 gap-4">
+      <p class="text-gray-500 text-center">
+        You have no tractors in your listing.
+      </p>
+      <%= link_to 'Add Tractor', new_tractor_listing_tractor_path(@tractor_listing), class: 'btn btn-primary px-4 py-2 rounded-md shadow-sm' %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,9 @@
+<%= link_to item[:path], class: "flex flex-col gap-2 justify-center py-2 px-4 rounded-lg hover:scale-[1.01] transition-all duration-300 bg-white shadow-md border-l-4 border-orange-200" do %>
+  <div class="flex justify-between gap-2">
+    <div class=" p-2 w-fit flex items-center gap-4">
+      <i class="<%= item[:icon] %> text-lg"></i>
+      <span class="text-gray-800 font-medium text-sm items-center"><%= item[:text] %></span  >
+    </div>
+    <span class="text-6xl font-bold"><%= item[:count] %></span>
+  </div>
+<% end %>
